@@ -1,0 +1,8 @@
+# Built provider binary (source-based plugin builds on demand)
+/pulumi-minecraft
+/minecraft-server
+*.exe
+
+# Local Pulumi/IDE cruft
+.pulumi/
+.DS_Store
