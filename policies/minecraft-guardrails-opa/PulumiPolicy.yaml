@@ -1,0 +1,3 @@
+runtime: opa
+name: minecraft-guardrails-opa
+description: Advisory guardrail — recommend backups on Minecraft droplets.

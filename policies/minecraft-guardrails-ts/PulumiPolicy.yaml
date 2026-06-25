@@ -1,0 +1,3 @@
+runtime: nodejs
+name: minecraft-guardrails-ts
+description: Mandatory guardrail — every Minecraft droplet must carry the 'minecraft' tag.

@@ -1,0 +1,7 @@
+name: minecraft-guardrails-py
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Mandatory guardrail — Minecraft droplets must run in an approved region.
+version: 0.0.1
