@@ -58,22 +58,35 @@ func boolStr(b bool) string {
 // empty), accepts the EULA, writes server.properties from the variable block,
 // and starts the server in a detached screen session.
 const cloudInitBody = `
-set -euxo pipefail
+set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y default-jdk wget curl jq screen
+apt-get install -y wget curl jq screen apt-transport-https gpg ca-certificates
 
 useradd -m -d /opt/minecraft minecraft || true
 cd /opt/minecraft
 
-# Resolve the server.jar URL. If the component didn't pass one, look up the
-# latest release from Mojang's version manifest.
+# Resolve the server.jar URL and the Java version this build needs. When the
+# component didn't pass a URL, ask Mojang's official version manifest for the
+# latest release.
+JAVA_MAJOR=21
 if [ -z "${SERVER_JAR_URL:-}" ]; then
-  MANIFEST="$(curl -fsSL https://launchermeta.mojang.com/mc/game/version_manifest_v2.json)"
+  MANIFEST="$(curl -fsSL https://piston-meta.mojang.com/mc/game/version_manifest_v2.json)"
   LATEST="$(echo "$MANIFEST" | jq -r '.latest.release')"
   VERSION_URL="$(echo "$MANIFEST" | jq -r --arg v "$LATEST" '.versions[] | select(.id==$v) | .url')"
-  SERVER_JAR_URL="$(curl -fsSL "$VERSION_URL" | jq -r '.downloads.server.url')"
+  VERSION_JSON="$(curl -fsSL "$VERSION_URL")"
+  SERVER_JAR_URL="$(echo "$VERSION_JSON" | jq -r '.downloads.server.url')"
+  JAVA_MAJOR="$(echo "$VERSION_JSON" | jq -r '.javaVersion.majorVersion // 21')"
 fi
+
+# Install the JDK this server build actually needs, from Eclipse Adoptium.
+# (Modern Minecraft jumps Java versions; e.g. MC 26.2 requires Java 25.)
+wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /etc/apt/trusted.gpg.d/adoptium.gpg
+echo "deb https://packages.adoptium.net/artifactory/deb $(. /etc/os-release && echo "$VERSION_CODENAME") main" > /etc/apt/sources.list.d/adoptium.list
+apt-get update
+apt-get install -y "temurin-${JAVA_MAJOR}-jdk"
+JAVA_BIN="$(command -v java)"
+
 wget -O server.jar "$SERVER_JAR_URL"
 
 # Accept the Mojang EULA (deploying the server implies acceptance).
@@ -97,5 +110,5 @@ PROPS
 chown -R minecraft:minecraft /opt/minecraft
 
 # Start the server in a detached screen session.
-su - minecraft -c "cd /opt/minecraft && screen -dmS minecraft_server java -Xmx${JAVA_MEMORY} -Xms${JAVA_MEMORY} -jar server.jar nogui"
+su - minecraft -c "cd /opt/minecraft && screen -dmS minecraft_server $JAVA_BIN -Xmx${JAVA_MEMORY} -Xms${JAVA_MEMORY} -jar server.jar nogui"
 `
