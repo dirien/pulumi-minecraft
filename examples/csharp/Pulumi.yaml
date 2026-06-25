@@ -1,6 +1,6 @@
-name: minecraft-on-digitalocean-csharp
+name: ${PROJECT}
 runtime: dotnet
-description: Spin up a Java Minecraft server on DigitalOcean — C# program.
+description: ${DESCRIPTION}
 
 template:
   displayName: Minecraft Server (DigitalOcean · C#)

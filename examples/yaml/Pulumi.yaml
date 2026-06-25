@@ -1,6 +1,6 @@
-name: minecraft-on-digitalocean-yaml
+name: ${PROJECT}
 runtime: yaml
-description: Spin up a Java Minecraft server on DigitalOcean — YAML program.
+description: ${DESCRIPTION}
 template:
   displayName: Minecraft Server (DigitalOcean · YAML)
   description: >-

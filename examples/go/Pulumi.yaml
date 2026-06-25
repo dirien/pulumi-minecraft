@@ -1,6 +1,6 @@
-name: minecraft-on-digitalocean-go
+name: ${PROJECT}
 runtime: go
-description: Spin up a Java Minecraft server on DigitalOcean — Go program.
+description: ${DESCRIPTION}
 template:
   displayName: Minecraft Server (DigitalOcean · Go)
   description: >-
