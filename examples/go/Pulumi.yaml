@@ -1,0 +1,32 @@
+name: minecraft-on-digitalocean-go
+runtime: go
+description: Spin up a Java Minecraft server on DigitalOcean — Go program.
+template:
+  displayName: Minecraft Server (DigitalOcean · Go)
+  description: >-
+    Deploy a Java Minecraft server on a DigitalOcean droplet, written in Go.
+    Cloud auth comes from a Pulumi ESC environment, so the only things you pick
+    here are how the server should play.
+  config:
+    region:
+      description: "DigitalOcean region: fra1, nyc3, sfo3, sgp1, ..."
+      default: fra1
+    size:
+      description: "Droplet size slug (Minecraft likes RAM)"
+      default: s-2vcpu-4gb
+    motd:
+      description: "Message of the day shown in the multiplayer server list"
+      default: A Pulumi-powered Minecraft server
+    maxPlayers:
+      description: "Maximum concurrent players"
+      default: "20"
+    difficulty:
+      description: "World difficulty: peaceful, easy, normal, hard"
+      default: easy
+    gamemode:
+      description: "Default game mode: survival, creative, adventure, spectator"
+      default: survival
+    serverJarUrl:
+      description: "server.jar URL (leave empty to auto-resolve the latest release)"
+packages:
+  minecraft: github.com/dirien/pulumi-minecraft@v0.1.0
