@@ -5,9 +5,23 @@ template:
   displayName: Minecraft Server (DigitalOcean · Go)
   description: >-
     Deploy a Java Minecraft server on a DigitalOcean droplet, written in Go.
-    Configuration and DigitalOcean credentials come from a Pulumi ESC
-    environment. Attach one (e.g. minecraft/demo or minecraft/prod) when you
-    create the project and it sets the region, size, and every
-    server.properties value.
+    Credentials and base config come from a Pulumi ESC environment (attach one,
+    e.g. minecraft/demo or minecraft/prod). Any field you set below overrides
+    the env for this stack; leave it blank to use the env value.
+  config:
+    region:
+      description: "DigitalOcean region, e.g. fra1, nyc3, sfo3 (blank = ESC env)"
+    size:
+      description: "Droplet size slug, e.g. s-2vcpu-4gb (blank = ESC env)"
+    motd:
+      description: "Message of the day (blank = ESC env)"
+    maxPlayers:
+      description: "Max concurrent players (blank = ESC env)"
+    difficulty:
+      description: "Difficulty: peaceful, easy, normal, hard (blank = ESC env)"
+    gamemode:
+      description: "Game mode: survival, creative, adventure, spectator (blank = ESC env)"
+    serverJarUrl:
+      description: "server.jar URL (blank = auto-resolve the latest release)"
 packages:
   minecraft: github.com/dirien/pulumi-minecraft@v0.1.0
