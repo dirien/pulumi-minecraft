@@ -4,28 +4,7 @@ description: ${DESCRIPTION}
 template:
   displayName: Minecraft Server (DigitalOcean · YAML)
   description: >-
-    Deploy a Java Minecraft server on a DigitalOcean droplet, written in YAML. Cloud auth comes from a Pulumi ESC environment, so the only things you pick here are how the server should play.
-  config:
-    region:
-      description: "DigitalOcean region: fra1, nyc3, sfo3, sgp1, ..."
-      default: fra1
-    size:
-      description: "Droplet size slug (Minecraft likes RAM)"
-      default: s-2vcpu-4gb
-    motd:
-      description: "Message of the day shown in the multiplayer server list"
-      default: A Pulumi-powered Minecraft server
-    maxPlayers:
-      description: "Maximum concurrent players"
-      default: "20"
-    difficulty:
-      description: "World difficulty: peaceful, easy, normal, hard"
-      default: easy
-    gamemode:
-      description: "Default game mode: survival, creative, adventure, spectator"
-      default: survival
-    serverJarUrl:
-      description: "server.jar URL (leave empty to auto-resolve the latest release)"
+    Deploy a Java Minecraft server on a DigitalOcean droplet, written in YAML. Configuration and DigitalOcean credentials come from a Pulumi ESC environment. Attach one (e.g. minecraft/demo or minecraft/prod) when you create the project and it sets the region, size, and every server.properties value.
 config:
   region:
     type: string
